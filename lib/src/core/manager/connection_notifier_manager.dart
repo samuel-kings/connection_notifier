@@ -1,12 +1,8 @@
 library connection_notifier_manager;
 
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+
 import 'dart:async' show Completer, Future, Stream, StreamSubscription;
-
-import 'package:connection_notifier/src/core/internal/connection_handler.dart'
-    show ConnectionHandler;
-
-import 'package:connection_notifier/src/core/internal/connection_notifier_internet_connection_status.dart'
-    show ConnectionNotifierInternetConnectionStatus;
 
 import 'package:rxdart/subjects.dart' show BehaviorSubject;
 
@@ -19,8 +15,7 @@ class ConnectionNotifierManager {
 
   bool? get isConnected => _connection.value;
 
-  static final ConnectionNotifierManager _shared =
-      ConnectionNotifierManager._sharedInstance();
+  static final ConnectionNotifierManager _shared = ConnectionNotifierManager._sharedInstance();
 
   static ConnectionNotifierManager get instance => _shared;
 
@@ -36,13 +31,12 @@ class ConnectionNotifierManager {
 
   bool _connected = false;
 
-  StreamSubscription<ConnectionNotifierInternetConnectionStatus>? _subscription;
+  StreamSubscription<InternetStatus>? _subscription;
 
   Future<bool> initialize() async {
-    _subscription = ConnectionHandler.onStatusChange.listen(
+    _subscription = InternetConnection().onStatusChange.listen(
       (status) {
-        final connected =
-            status == ConnectionNotifierInternetConnectionStatus.connected;
+        final connected = status == InternetStatus.connected;
         _connected = connected;
         if (_pauseListening) {
           return;
