@@ -29,7 +29,7 @@ class ConnectionNotifierManager {
 
   bool _pauseListening = false;
 
-  bool _connected = false;
+  bool _connected = true;
 
   StreamSubscription<InternetStatus>? _subscription;
 
